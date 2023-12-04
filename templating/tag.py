@@ -16,7 +16,7 @@ class BaseElement:
         self._id_list.extend(ids)
         return self
 
-    def classes(self, *classes: str) -> 'BaseElement':
+    def cls(self, *classes: str) -> 'BaseElement':
         self._class_list.extend(classes)
         return self
 
