@@ -1,7 +1,9 @@
+from typing import Union
+
 from .tag import BaseElement
 
 
 class Div(BaseElement):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *content: Union[str, BaseElement]):
+        super().__init__(*content)
         self._tag = 'div'

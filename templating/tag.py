@@ -26,6 +26,8 @@ class BaseElement:
         return f'{ids}{classes}'
 
     def _get_content(self) -> str:
+        if not self._content_list:
+            raise ValueError('No Content received.')
         if isinstance(self._content_list[0], str):
             if len(self._content_list) > 1:
                 raise ValueError('Content of type str can only be used once.')
@@ -39,23 +41,23 @@ class BaseElement:
 
 
 class H(BaseElement):
-    def __init__(self, importance: int):
+    def __init__(self, importance: int, *content: Union[str, BaseElement]):
         self.importance = importance
         if self.importance < 1 or self.importance > 6:
             raise ValueError('H tag importance has to be between 1 and 6.')
-        super().__init__()
+        super().__init__(*content)
         self._tag = f'h{self.importance}'
 
 
 class P(BaseElement):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *content: Union[str, BaseElement]):
+        super().__init__(*content)
         self._tag = 'p'
 
 
 class Small(BaseElement):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *content: Union[str, BaseElement]):
+        super().__init__(*content)
         self._tag = 'small'
 
 
