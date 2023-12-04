@@ -28,16 +28,15 @@ class BaseElement:
     def _get_content(self) -> str:
         if not self._content_list:
             return ''
-        if isinstance(self._content_list[0], str):
-            if len(self._content_list) > 1:
-                raise ValueError('Content of type str can only be used once.')
-            return str(self._content_list[0])
         return f'\n\t{'\n\t'.join(str(content) for content in self._content_list)}\n'
+
+    def _additional(self):
+        return ''
 
     def _construct(self):
         if not self._tag:
             raise NotImplementedError('Subclassed need to implement the _construct function.')
-        return f'<{self._tag}{self._get_meta()}>{self._get_content()}</{self._tag}>'
+        return f'<{self._tag}{self._get_meta()}{self._additional()}>{self._get_content()}</{self._tag}>'
 
 
 class H(BaseElement):
@@ -55,10 +54,42 @@ class P(BaseElement):
         self._tag = 'p'
 
 
+class A(BaseElement):
+    def __init__(self, *content: Union[str, BaseElement]):
+        super().__init__(*content)
+        self._href: str = ''
+        self._target: str = ''
+        self._rel: str = ''
+        self._tag = 'a'
+
+    def _additional(self):
+        return f'{self._href}{self._rel}{self._target}'
+
+    def href(self, href: str):
+        self._href = f' href=\'{href}\''
+        return self
+
+    def rel(self, rel: str):
+        self._rel = f' rel=\'{rel}\''
+        return self
+
+    def target(self, target: str):
+        valid_target = ['_self', '_blank', '_parent', '_top']
+        if target not in valid_target:
+            raise ValueError(f'Used invalid target: {target} valid targets are: {valid_target}.')
+        self._target = f' target=\'{target}\''
+        return self
+
+
 class Small(BaseElement):
     def __init__(self, *content: Union[str, BaseElement]):
         super().__init__(*content)
         self._tag = 'small'
 
+
+class Span(BaseElement):
+    def __init__(self, *content: Union[str, BaseElement]):
+        super().__init__(*content)
+        self._tag = 'span'
 
 
