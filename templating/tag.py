@@ -28,7 +28,13 @@ class BaseElement:
     def _get_content(self) -> str:
         if not self._content_list:
             return ''
-        return f'\n\t{'\n\t'.join(str(content) for content in self._content_list)}\n'
+        content_str = ''
+        for content in self._content_list:
+            if isinstance(content, str):
+                content_str += content
+                continue
+            content_str += f'\n\t{str(content)}'
+        return content_str
 
     def _additional(self):
         return ''
@@ -36,7 +42,7 @@ class BaseElement:
     def _construct(self):
         if not self._tag:
             raise NotImplementedError('Subclassed need to implement the _construct function.')
-        return f'<{self._tag}{self._get_meta()}{self._additional()}>{self._get_content()}</{self._tag}>'
+        return f'<{self._tag}{self._get_meta()}{self._additional()}>{self._get_content()}</{self._tag}>\n'
 
 
 class H(BaseElement):
