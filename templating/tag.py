@@ -27,7 +27,7 @@ class BaseElement:
 
     def _get_content(self) -> str:
         if not self._content_list:
-            raise ValueError('No Content received.')
+            return ''
         if isinstance(self._content_list[0], str):
             if len(self._content_list) > 1:
                 raise ValueError('Content of type str can only be used once.')
