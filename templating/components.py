@@ -14,6 +14,6 @@ class HTML:
             file.write(self._construct())
 
     def _construct(self):
-        content = f'{'\n\t'.join(str(content) for content in self.content_list)}'
+        content = f'{" ".join(str(content) for content in self.content_list)}'
         return content
 
